@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { jsx } from "react/jsx-runtime"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sidebar } from "@/components/sidebar"
 import { BookshelfGrid } from "@/components/bookshelf-grid"
