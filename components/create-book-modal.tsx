@@ -9,13 +9,22 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 
+/**
+ * Props for the CreateBookModal component.
+ * @typedef {Object} CreateBookModalProps
+ * @property {boolean} isOpen - Controls modal visibility
+ * @property {() => void} onClose - Callback when modal is closed (reset included)
+ * @property {(book: Omit<Book, 'id' | 'noteCount' | 'notes' | 'createdAt'>) => void} onCreateBook - Callback with new book data
+ */
 interface CreateBookModalProps {
   isOpen: boolean
   onClose: () => void
   onCreateBook: (book: Omit<Book, "id" | "noteCount" | "notes" | "createdAt">) => void
 }
 
+/** Available emoji options for book icons */
 const emojis = ["📚", "💡", "🎨", "✨", "📝", "⚡", "🎯", "🚀", "💼", "🌟", "🔥", "💎"]
+/** Available color options for books with Tailwind color mapping */
 const colors: { value: Book["color"]; label: string; class: string }[] = [
   { value: "emerald", label: "Emerald", class: "bg-emerald-500" },
   { value: "blue", label: "Blue", class: "bg-blue-500" },
@@ -24,11 +33,29 @@ const colors: { value: Book["color"]; label: string; class: string }[] = [
   { value: "pink", label: "Pink", class: "bg-pink-500" },
 ]
 
+/**
+ * CreateBookModal component - Modal dialog for creating new books.
+ * Allows users to set title, emoji icon, and color scheme.
+ * Form automatically resets on close.
+ *
+ * @component
+ * @param {CreateBookModalProps} props - Component props
+ * @returns {React.ReactElement | null} Modal dialog or null when closed
+ *
+ * @example
+ * <CreateBookModal
+ *   isOpen={showModal}
+ *   onClose={handleClose}
+ *   onCreateBook={handleCreateBook}
+ * />
+ */
 export function CreateBookModal({ isOpen, onClose, onCreateBook }: CreateBookModalProps) {
+  // Form state for book creation
   const [title, setTitle] = useState("")
   const [emoji, setEmoji] = useState("📚")
   const [color, setColor] = useState<Book["color"]>("emerald")
 
+  /** Validates and submits new book data, then resets form */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!title.trim()) return
@@ -39,6 +66,7 @@ export function CreateBookModal({ isOpen, onClose, onCreateBook }: CreateBookMod
     setColor("emerald")
   }
 
+  /** Resets form state and closes modal */
   const handleClose = () => {
     setTitle("")
     setEmoji("📚")

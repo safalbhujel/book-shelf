@@ -10,19 +10,44 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
+/**
+ * Props for the CreateNoteModal component.
+ * @typedef {Object} CreateNoteModalProps
+ * @property {boolean} isOpen - Controls modal visibility
+ * @property {() => void} onClose - Callback when modal is closed (form resets automatically)
+ * @property {(note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => void} onCreateNote - Callback with new note data
+ */
 interface CreateNoteModalProps {
   isOpen: boolean
   onClose: () => void
   onCreateNote: (note: Omit<Note, "id" | "createdAt" | "updatedAt">) => void
 }
 
+/**
+ * CreateNoteModal component - Modal dialog for creating new notes within a book.
+ * Allows users to set title, content, add tags, and pin status.
+ * Form automatically resets on close with proper tag management.
+ *
+ * @component
+ * @param {CreateNoteModalProps} props - Component props
+ * @returns {React.ReactElement | null} Modal dialog or null when closed
+ *
+ * @example
+ * <CreateNoteModal
+ *   isOpen={showModal}
+ *   onClose={handleClose}
+ *   onCreateNote={handleCreateNote}
+ * />
+ */
 export function CreateNoteModal({ isOpen, onClose, onCreateNote }: CreateNoteModalProps) {
+  // Form state management for note creation
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [tagInput, setTagInput] = useState("")
   const [tags, setTags] = useState<string[]>([])
   const [pinned, setPinned] = useState(false)
 
+  /** Adds tag to array if unique and non-empty, prevents duplicates */
   const handleAddTag = () => {
     const tag = tagInput.trim().toLowerCase()
     if (tag && !tags.includes(tag)) {
@@ -31,10 +56,12 @@ export function CreateNoteModal({ isOpen, onClose, onCreateNote }: CreateNoteMod
     }
   }
 
+  /** Removes specified tag from tags array */
   const handleRemoveTag = (tagToRemove: string) => {
     setTags(tags.filter(tag => tag !== tagToRemove))
   }
 
+  /** Triggers tag addition on Enter key press */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault()
@@ -42,6 +69,7 @@ export function CreateNoteModal({ isOpen, onClose, onCreateNote }: CreateNoteMod
     }
   }
 
+  /** Validates required fields and submits note with all data */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!title.trim() || !content.trim()) return
@@ -59,6 +87,7 @@ export function CreateNoteModal({ isOpen, onClose, onCreateNote }: CreateNoteMod
     setPinned(false)
   }
 
+  /** Resets all form fields and closes modal */
   const handleClose = () => {
     setTitle("")
     setContent("")

@@ -5,6 +5,12 @@ import { FileText } from "lucide-react"
 import type { Book } from "@/app/page"
 import { cn } from "@/lib/utils"
 
+/**
+ * Props for the BookCard component.
+ * @typedef {Object} BookCardProps
+ * @property {Book} book - The book data to display
+ * @property {() => void} onSelect - Callback when the card is clicked
+ */
 interface BookCardProps {
   book: Book
   onSelect: () => void
@@ -43,6 +49,17 @@ const colorVariants = {
   },
 }
 
+/**
+ * BookCard component - Displays a single book with emoji, title, and note count.
+ * Features smooth hover animations and color-coded styling.
+ *
+ * @component
+ * @param {BookCardProps} props - Component props
+ * @returns {React.ReactElement} Animated book card with interactive hover effects
+ *
+ * @example
+ * <BookCard book={book} onSelect={() => handleSelectBook(book)} />
+ */
 export function BookCard({ book, onSelect }: BookCardProps) {
   const variant = colorVariants[book.color]
 

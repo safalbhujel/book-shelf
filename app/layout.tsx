@@ -1,3 +1,8 @@
+/**
+ * Root Layout Component
+ * Configures global metadata, fonts, analytics, and theme provider.
+ * Wraps the entire application with necessary providers and styles.
+ */
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'

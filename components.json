@@ -1,8 +1,13 @@
 {
+  // Shadcn/ui schema reference
   "$schema": "https://ui.shadcn.com/schema.json",
+  // Design system preset
   "style": "new-york",
+  // React Server Components enabled
   "rsc": true,
+  // TypeScript support
   "tsx": true,
+  // Tailwind CSS configuration
   "tailwind": {
     "config": "",
     "css": "app/globals.css",
@@ -10,6 +15,7 @@
     "cssVariables": true,
     "prefix": ""
   },
+  // Import path aliases
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",

@@ -16,6 +16,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 
+/**
+ * Props for the BookDetail component.
+ * @typedef {Object} BookDetailProps
+ * @property {Book} book - The book to display details for
+ * @property {() => void} onBack - Callback to return to book list
+ * @property {(bookId: string, note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => void} onAddNote - Callback to add a new note
+ * @property {(bookId: string, noteId: string) => void} onTogglePin - Callback to toggle note pin status
+ * @property {(bookId: string, noteId: string) => void} onDeleteNote - Callback to delete a note
+ */
 interface BookDetailProps {
   book: Book
   onBack: () => void
@@ -24,6 +33,7 @@ interface BookDetailProps {
   onDeleteNote: (bookId: string, noteId: string) => void
 }
 
+/** Gradient color variants for book header styling - matches book color scheme */
 const colorVariants = {
   emerald: "from-emerald-500/20 to-emerald-600/10",
   blue: "from-blue-500/20 to-blue-600/10",
@@ -32,23 +42,47 @@ const colorVariants = {
   pink: "from-pink-500/20 to-pink-600/10",
 }
 
+/**
+ * BookDetail component - Full detail view for a single book with all its notes.
+ * Displays book header with emoji, title, search functionality, and notes grid.
+ * Separates pinned and regular notes with filtering by search query.
+ * Includes create note modal and empty state messaging.
+ *
+ * @component
+ * @param {BookDetailProps} props - Component props
+ * @returns {React.ReactElement} Book detail view with notes grid and search
+ *
+ * @example
+ * <BookDetail
+ *   book={selectedBook}
+ *   onBack={() => setSelectedBook(null)}
+ *   onAddNote={(bookId, note) => handleAddNote(bookId, note)}
+ *   onTogglePin={(bookId, noteId) => handleTogglePin(bookId, noteId)}
+ *   onDeleteNote={(bookId, noteId) => handleDeleteNote(bookId, noteId)}
+ * />
+ */
 export function BookDetail({ book, onBack, onAddNote, onTogglePin, onDeleteNote }: BookDetailProps) {
+  // Local state for search and modal
   const [searchQuery, setSearchQuery] = useState("")
   const [isCreateNoteOpen, setIsCreateNoteOpen] = useState(false)
 
+  // Separate pinned and regular notes for organized display
   const pinnedNotes = book.notes.filter(note => note.pinned)
   const regularNotes = book.notes.filter(note => !note.pinned)
 
+  /** Filters pinned notes by search query across title and content */
   const filteredPinned = pinnedNotes.filter(note =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     note.content.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  /** Filters regular notes by search query across title and content */
   const filteredRegular = regularNotes.filter(note =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     note.content.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  /** Handles note creation with parent callback and closes modal */
   const handleCreateNote = (note: Omit<Note, "id" | "createdAt" | "updatedAt">) => {
     onAddNote(book.id, note)
     setIsCreateNoteOpen(false)

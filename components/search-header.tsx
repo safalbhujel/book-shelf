@@ -7,11 +7,18 @@ import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
+/**
+ * Props for the SearchHeader component.
+ * @typedef {Object} SearchHeaderProps
+ * @property {string} searchQuery - Current search query value
+ * @property {(query: string) => void} onSearchChange - Callback when search input changes
+ */
 interface SearchHeaderProps {
   searchQuery: string
   onSearchChange: (query: string) => void
 }
 
+/** Navigation menu items displayed on mobile menu */
 const navItems = [
   { icon: Home, label: "Dashboard", active: true },
   { icon: BookOpen, label: "All Books", active: false },
@@ -21,7 +28,23 @@ const navItems = [
   { icon: FolderOpen, label: "Archive", active: false },
 ]
 
+/**
+ * SearchHeader component - Top header with search functionality and user menu.
+ * Includes responsive mobile menu, notifications, and user profile.
+ * Adapts layout based on viewport size (md breakpoint).
+ *
+ * @component
+ * @param {SearchHeaderProps} props - Component props
+ * @returns {React.ReactElement} Header with search and navigation
+ *
+ * @example
+ * <SearchHeader
+ *   searchQuery={query}
+ *   onSearchChange={handleSearchChange}
+ * />
+ */
 export function SearchHeader({ searchQuery, onSearchChange }: SearchHeaderProps) {
+  // Mobile menu state for responsive navigation
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (

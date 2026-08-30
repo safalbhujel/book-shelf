@@ -11,6 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+/**
+ * Props for the NoteCard component.
+ * @typedef {Object} NoteCardProps
+ * @property {Note} note - The note data to display
+ * @property {"emerald" | "blue" | "orange" | "purple" | "pink"} color - Color scheme for styling
+ * @property {() => void} onTogglePin - Callback when pin button is clicked
+ * @property {() => void} onDelete - Callback when delete menu item is clicked
+ */
 interface NoteCardProps {
   note: Note
   color: "emerald" | "blue" | "orange" | "purple" | "pink"
@@ -41,6 +49,23 @@ const colorVariants = {
   },
 }
 
+/**
+ * NoteCard component - Displays a single note with title, content preview, and tags.
+ * Features pin toggling, hover animations, and action menu.
+ * Truncates content and title for consistent card size.
+ *
+ * @component
+ * @param {NoteCardProps} props - Component props
+ * @returns {React.ReactElement} Styled note card with interactive elements
+ *
+ * @example
+ * <NoteCard
+ *   note={note}
+ *   color="emerald"
+ *   onTogglePin={() => handleTogglePin(note.id)}
+ *   onDelete={() => handleDeleteNote(note.id)}
+ * />
+ */
 export function NoteCard({ note, color, onTogglePin, onDelete }: NoteCardProps) {
   const variant = colorVariants[color]
 

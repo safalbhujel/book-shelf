@@ -9,6 +9,17 @@ import { BookDetail } from "@/components/book-detail"
 import { SearchHeader } from "@/components/search-header"
 import { CreateBookModal } from "@/components/create-book-modal"
 
+/**
+ * Note data structure representing a note within a book.
+ * @typedef {Object} Note
+ * @property {string} id - Unique identifier
+ * @property {string} title - Note title
+ * @property {string} content - Note content/body
+ * @property {string[]} tags - Associated tags for categorization
+ * @property {boolean} pinned - Whether note is pinned to top
+ * @property {Date} createdAt - Creation timestamp
+ * @property {Date} updatedAt - Last update timestamp
+ */
 export interface Note {
   id: string
   title: string
@@ -19,6 +30,17 @@ export interface Note {
   updatedAt: Date
 }
 
+/**
+ * Book data structure representing a collection/category for organizing notes.
+ * @typedef {Object} Book
+ * @property {string} id - Unique identifier
+ * @property {string} title - Book title
+ * @property {string} emoji - Emoji icon representing the book
+ * @property {"emerald" | "blue" | "orange" | "purple" | "pink"} color - Color scheme
+ * @property {number} noteCount - Number of notes in this book
+ * @property {Note[]} notes - Array of notes contained in this book
+ * @property {Date} createdAt - Creation timestamp
+ */
 export interface Book {
   id: string
   title: string
@@ -102,24 +124,50 @@ const initialBooks: Book[] = [
   },
 ]
 
+/**
+ * HomePage Component - Main application interface
+ * Manages the root-level state for books, selected book, search, and modals.
+ * Coordinates between sidebar navigation, book grid, and book detail views.
+ * Handles all book and note CRUD operations.
+ *
+ * State Structure:
+ * - books: Array of all books with their notes
+ * - selectedBook: Currently viewed book (null shows grid, set shows detail)
+ * - searchQuery: Search term filtered across book titles
+ * - isCreateModalOpen: Controls create book modal visibility
+ *
+ * Features:
+ * - Animated view transitions between grid and detail
+ * - Real-time filtering by search query
+ * - Note pinning and organization
+ * - Book and note management (create, delete, toggle pin)
+ *
+ * @component
+ * @returns {React.ReactElement} Main application layout with navigation and content
+ */
 export default function HomePage() {
+  // Application state management
   const [books, setBooks] = useState<Book[]>(initialBooks)
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
+  // Filter books by search query across title field
   const filteredBooks = books.filter(book =>
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  /** Updates selected book when user clicks on a book card */
   const handleSelectBook = (book: Book) => {
     setSelectedBook(book)
   }
 
+  /** Clears selected book to return to grid view */
   const handleBackToShelf = () => {
     setSelectedBook(null)
   }
 
+  /** Creates new book with unique ID and adds to books array */
   const handleCreateBook = (newBook: Omit<Book, "id" | "noteCount" | "notes" | "createdAt">) => {
     const book: Book = {
       ...newBook,
@@ -132,6 +180,7 @@ export default function HomePage() {
     setIsCreateModalOpen(false)
   }
 
+  /** Adds new note to specified book and updates selected book if currently viewed */
   const handleAddNote = (bookId: string, note: Omit<Note, "id" | "createdAt" | "updatedAt">) => {
     setBooks(books.map(book => {
       if (book.id === bookId) {
@@ -155,6 +204,7 @@ export default function HomePage() {
     }))
   }
 
+  /** Toggles pin status for a note within a book */
   const handleTogglePin = (bookId: string, noteId: string) => {
     setBooks(books.map(book => {
       if (book.id === bookId) {
@@ -173,6 +223,7 @@ export default function HomePage() {
     }))
   }
 
+  /** Removes a note from a book and decrements note count */
   const handleDeleteNote = (bookId: string, noteId: string) => {
     setBooks(books.map(book => {
       if (book.id === bookId) {

@@ -13,6 +13,8 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+/** Navigation items for the sidebar menu */
+/** Navigation menu structure - customize items here for different routes */
 const navItems = [
   { icon: Home, label: "Dashboard", active: true },
   { icon: BookOpen, label: "All Books", active: false },
@@ -22,6 +24,17 @@ const navItems = [
   { icon: FolderOpen, label: "Archive", active: false },
 ]
 
+/**
+ * Sidebar component - Main navigation panel for desktop view.
+ * Displays logo, primary navigation menu, and section shortcuts.
+ * Only visible on medium screens and above (md breakpoint).
+ *
+ * @component
+ * @returns {React.ReactElement} Animated sidebar with navigation menu
+ *
+ * @example
+ * <Sidebar />
+ */
 export function Sidebar() {
   return (
     <motion.aside
